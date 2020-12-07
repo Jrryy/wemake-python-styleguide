@@ -1,5 +1,5 @@
 import ast
-from typing import Optional, Tuple, Type
+from typing import Optional, Tuple, Type, Union
 
 from wemake_python_styleguide.compat.aliases import FunctionNodes
 from wemake_python_styleguide.logic.nodes import get_parent
@@ -96,3 +96,26 @@ def _apply_if_statement(statement: ast.If) -> None:
             if child in statement.orelse:
                 setattr(statement, 'wps_if_chained', True)  # noqa: B010
                 setattr(child, 'wps_if_chain', statement)  # noqa: B010
+
+
+def _evaluate_pure_expressions(node: ast.BinOp) -> Union[ast.BinOp, int, float, str, ]:
+    """
+    Evaluates a pure expression.
+    """
+
+
+def _find_pure_expressions(tree: ast.AST) -> ast.AST:
+    """
+    Tries to evaluate an expression with constants and return its result in a new node.
+
+    In case anything failed, the untouched node would be returned.
+    """
+    for node in ast.walk(tree):
+        if isinstance(node, ast.BinOp):
+            left = node.left
+            right = node.right
+            if isinstance(left, ast.NameConstant) and isinstance(right, ast.NameConstant):
+
+
+
+    return tree
